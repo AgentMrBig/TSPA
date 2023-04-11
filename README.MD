@@ -1,33 +1,69 @@
-# Trend Prediction App
+<h1 align="center">Time Series Prediction App</h1>
 
-This app trains a machine learning model on historical time series data to predict the start of a trend and its duration.
+<p align="center">
+  <em>An app for predicting trends in time series data using machine learning models.</em>
+</p>
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Components](#components)
+  - [data_processing.py](#data_processingpy)
+  - [feature_engineering.py](#feature_engineeringpy)
+  - [train_evaluate.py](#train_evaluatepy)
+  - [visualization.py](#visualizationpy)
+  - [app.py](#apppy)
+- [Installation](#installation)
+- [Usage](#usage)
 
 ## Overview
 
-The app is designed in a modular fashion, with different components handling specific tasks. The main components are:
+The Time Series Prediction App is designed to be modular, simple to use, and easy to debug. It consists of the following components:
 
 1. Data input and processing
-2. Training and prediction
-3. Visualization of results
+2. Feature engineering and model training
+3. Evaluation and visualization
+
+These components are implemented in separate Python files, making the app easy to maintain and extend.
 
 ## Components
 
-### 1. Data input and processing
+### `data_processing.py`
 
-- **data_processing.py**: Responsible for loading the CSV data, cleaning it, and preparing it for machine learning. The data columns include Gmt time, Open, High, Low, Close, and Volume.
+This file is responsible for reading and processing the input data in CSV format. It contains functions for loading the data, cleaning it, and preparing it for machine learning. The input data should have the following columns:
 
-### 2. Training and prediction
+- Gmt time
+- Open
+- High
+- Low
+- Close
+- Volume
 
-- **feature_engineering.py**: Generates features to be used in training the machine learning model. This includes creating moving averages, technical indicators, and other relevant features.
+### `feature_engineering.py`
 
-- **model_training.py**: Uses the prepared data and engineered features to train a machine learning model for trend prediction. The model predicts the first candle that starts the trend and the closing price when the trend is expected to end.
+This file is responsible for generating features that will be used to train the machine learning models. It contains functions for creating features based on the input data, such as moving averages, relative strength index (RSI), and other relevant indicators.
 
-### 3. Visualization of results
+### `train_evaluate.py`
 
-- **app.py**: A Python web server that uses Flask to run the app. This server integrates the data processing, feature engineering, and model training components.
+This file is responsible for training the machine learning models using the processed data and features. It contains functions for training models to predict trends, evaluating their performance, and saving the trained models. The models can be trained to predict trends at different time intervals, such as 5-minute, 15-minute, and 30-minute trends.
 
-- **visualization.py**: Responsible for displaying the results of the training, including the model's accuracy and a visualization of the model's performance on the last 25% of the training data.
+### `visualization.py`
+
+This file is responsible for visualizing the results of the trained models. It contains functions for generating plots or charts that show the model's predictions and the actual data. The visualization helps users understand the model's performance and make informed decisions.
+
+### `app.py`
+
+This file contains the Flask server that ties together all the components of the app. The server provides endpoints for processing data, training and evaluating models, and displaying the results. The app uses the `data_processing.py`, `feature_engineering.py`, `train_evaluate.py`, and `visualization.py` files to create a complete web application.
+
+## Installation
+
+1. Install Python 3.7 or later.
+2. Clone the repository.
+3. Install the required packages using `pip install -r requirements.txt`.
 
 ## Usage
 
-To use the app, simply run `python app.py` and navigate to the specified URL in your browser. The app will display the training results, model accuracy, and a visualization of the model's performance on the last 25% of the training data.
+1. Run the Flask server using `python app.py`.
+2. Open your web browser and navigate to `http://localhost:5000`.
+3. Upload your CSV file with time series data.
+4. Process the data, train the models, and visualize the results.
