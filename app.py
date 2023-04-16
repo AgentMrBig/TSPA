@@ -1,32 +1,30 @@
-from flask import Flask, render_template, request, jsonify
-import data_processing
-import feature_engineering
-import train_evaluate
-import visualization
+from flask import Flask, render_template
+from data_processing import process_data
+from feature_engineering import add_features
+from train_evaluate import train_model
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    file_path = './training_data/USDJPY_Candlestick_1_Hour_BID_02.01.2022-05.04.2023.csv'
+    data_5min, data_15min, data_30min = process_data(file_path)
 
-@app.route('/process_data', methods=['POST'])
-def process_data():
-    # Call functions from data_processing.py
-    # Return the processed data as JSON or store it for further use
-    pass
+    # Add features to the data
+    data_5min = add_features(data_5min)
+    data_15min = add_features(data_15min)
+    data_30min = add_features(data_30min)
 
-@app.route('/train_evaluate', methods=['POST'])
-def train_evaluate():
-    # Call functions from feature_engineering.py and train_evaluate.py
-    # Return the model evaluation results as JSON or store them for further use
-    pass
+    # Train and evaluate models
+    mae_train_5min, mae_test_5min = train_model(data_5min, 'Close', 'model_5min.pkl')
+    mae_train_15min, mae_test_15min = train_model(data_15min, 'Close', 'model_15min')
+    mae_train_5min, mae_test_5min = train_model(data_5min, 'Close', 'model_5min.pkl')
+    mae_train_15min, mae_test_15min = train_model(data_15min, 'Close', 'model_15min.pkl')
+    mae_train_30min, mae_test_30min = train_model(data_30min, 'Close', 'model_30min.pkl')
 
-@app.route('/visualization')
-def visualize():
-    # Call functions from visualization.py
-    # Render a template with the generated plots or charts
-    pass
+    return render_template('index.html', mae_train_5min=mae_train_5min, mae_test_5min=mae_test_5min,
+                           mae_train_15min=mae_train_15min, mae_test_15min=mae_test_15min,
+                           mae_train_30min=mae_train_30min, mae_test_30min=mae_test_30min)
 
 if __name__ == '__main__':
     app.run(debug=True)
